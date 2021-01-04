@@ -1,12 +1,19 @@
 const express = require('express');
+const logger = require('morgan');
+require('dotenv').config();
+const db = require('./db/db');
+
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const shopsRouter = require('./routes/shops');
 
 const app = express();
+app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
-app.get('/', (req, res) =>{
-    res.send('We are on Home');
-});
-app.get('/post', (req, res) =>{
-    res.send('We are on post')
-})
+app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/shops', shopsRouter);
 
-app.listen(5000);
+module.exports = app;
